@@ -26,8 +26,8 @@ public class HighScoreRepository {
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
              Statement stmt = conn.createStatement()) {
             stmt.execute(createTableSQL);
-        } catch (SQLException e) {
-            System.err.println("Adatbazis hiba (init): " + e.getMessage());
+        } catch (SQLException p) {
+            System.err.println("Adatbazis hiba (init): " + p.getMessage());
         }
     }
 
@@ -41,8 +41,8 @@ public class HighScoreRepository {
             pstmt.setString(2, playerName);
             pstmt.executeUpdate();
             System.out.println("Eredmeny mentve az adatbazisba!");
-        } catch (SQLException e) {
-            System.err.println("Adatbazis hiba (save): " + e.getMessage());
+        } catch (SQLException p) {
+            System.err.println("Adatbazis hiba (save): " + p.getMessage());
         }
     }
 
@@ -57,8 +57,8 @@ public class HighScoreRepository {
             while (rs.next()) {
                 scores.add(rs.getString("player_name") + ": " + rs.getInt("wins") + " gyozelem");
             }
-        } catch (SQLException e) {
-            System.err.println("Adatbazis hiba (query): " + e.getMessage());
+        } catch (SQLException p) {
+            System.err.println("Adatbazis hiba (query): " +p.getMessage());
         }
         return scores;
     }
