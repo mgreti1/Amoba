@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="hu"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Board.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">amoba-game</a> &gt; <a href="index.source.html" class="el_package">hu.nye.progtech.service</a> &gt; <span class="el_source">Board.java</span></div><h1>Board.java</h1><pre class="source lang-java linenums">package hu.nye.progtech.service;
+
+import hu.nye.progtech.model.Coordinate;
+import hu.nye.progtech.model.Symbol;
+
+public class Board {
+    private final int rows;
+    private final int cols;
+    private final Symbol[][] grid;
+
+<span class="fc" id="L11">    public Board(int rows, int cols) {</span>
+<span class="fc" id="L12">        this.rows = rows;</span>
+<span class="fc" id="L13">        this.cols = cols;</span>
+<span class="fc" id="L14">        this.grid = new Symbol[rows][cols];</span>
+<span class="fc" id="L15">        initializeBoard();</span>
+<span class="fc" id="L16">    }</span>
+
+    private void initializeBoard() {
+<span class="fc bfc" id="L19" title="All 2 branches covered.">        for (int i = 0; i &lt; rows; i++) {</span>
+<span class="fc bfc" id="L20" title="All 2 branches covered.">            for (int j = 0; j &lt; cols; j++) {</span>
+<span class="fc" id="L21">                grid[i][j] = Symbol.EMPTY;</span>
+            }
+        }
+<span class="fc" id="L24">    }</span>
+
+    public void placeSymbol(Coordinate coord, Symbol symbol) {
+<span class="fc" id="L27">        grid[coord.getRow()][coord.getCol()] = symbol;</span>
+<span class="fc" id="L28">    }</span>
+
+    public Symbol getSymbol(int row, int col) {
+<span class="fc" id="L31">        return grid[row][col];</span>
+    }
+
+    public boolean isFull() {
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        for (int i = 0; i &lt; rows; i++) {</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">            for (int j = 0; j &lt; cols; j++) {</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">                if (grid[i][j] == Symbol.EMPTY) return false;</span>
+            }
+        }
+<span class="nc" id="L40">        return true;</span>
+    }
+
+<span class="fc" id="L43">    public int getRows() { return rows; }</span>
+<span class="fc" id="L44">    public int getCols() { return cols; }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L48">        StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L49">        sb.append(&quot;  &quot;);</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        for (int j = 0; j &lt; cols; j++) {</span>
+<span class="nc" id="L51">            sb.append((char) ('A' + j)).append(&quot; &quot;);</span>
+        }
+<span class="nc" id="L53">        sb.append(&quot;\n&quot;);</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        for (int i = 0; i &lt; rows; i++) {</span>
+<span class="nc" id="L55">            sb.append(String.format(&quot;%2d&quot;, i + 1)).append(&quot; &quot;);</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">            for (int j = 0; j &lt; cols; j++) {</span>
+<span class="nc" id="L57">                sb.append(grid[i][j]).append(&quot; &quot;);</span>
+            }
+<span class="nc" id="L59">            sb.append(&quot;\n&quot;);</span>
+        }
+<span class="nc" id="L61">        return sb.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<game_state>
+    <cols>10</cols>
+    <currentPlayerName>baki</currentPlayerName>
+    <placedSymbols>0,6,O</placedSymbols>
+    <placedSymbols>0,7,X</placedSymbols>
+    <placedSymbols>1,6,X</placedSymbols>
+    <placedSymbols>2,5,O</placedSymbols>
+    <rows>10</rows>
+</game_state>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="hu"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HighScoreRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">amoba-game</a> &gt; <a href="index.source.html" class="el_package">hu.nye.progtech.persistence</a> &gt; <span class="el_source">HighScoreRepository.java</span></div><h1>HighScoreRepository.java</h1><pre class="source lang-java linenums">package hu.nye.progtech.persistence;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+public class HighScoreRepository {
+
+    private static final String DB_URL = &quot;jdbc:h2:file:./highscore_db&quot;;
+    private static final String USER = &quot;sa&quot;;
+    private static final String PASS = &quot;&quot;;
+
+<span class="nc" id="L18">    public HighScoreRepository() {</span>
+<span class="nc" id="L19">        initTable();</span>
+<span class="nc" id="L20">    }</span>
+
+    private void initTable() {
+<span class="nc" id="L23">        String createTableSQL = &quot;CREATE TABLE IF NOT EXISTS highscores (&quot;</span>
+                + &quot;player_name VARCHAR(255) PRIMARY KEY, &quot;
+                + &quot;wins INT DEFAULT 0)&quot;;
+<span class="nc" id="L26">        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);</span>
+<span class="nc" id="L27">             Statement stmt = conn.createStatement()) {</span>
+<span class="nc" id="L28">            stmt.execute(createTableSQL);</span>
+<span class="nc" id="L29">        } catch (SQLException e) {</span>
+<span class="nc" id="L30">            System.err.println(&quot;Adatbazis hiba (init): &quot; + e.getMessage());</span>
+<span class="nc" id="L31">        }</span>
+<span class="nc" id="L32">    }</span>
+
+    public void saveWin(String playerName) {
+<span class="nc" id="L35">        String mergeSQL = &quot;MERGE INTO highscores (player_name, wins) KEY(player_name) &quot;</span>
+                + &quot;VALUES (?, COALESCE((SELECT wins FROM highscores WHERE player_name = ?), 0) + 1)&quot;;
+        
+<span class="nc" id="L38">        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);</span>
+<span class="nc" id="L39">             PreparedStatement pstmt = conn.prepareStatement(mergeSQL)) {</span>
+<span class="nc" id="L40">            pstmt.setString(1, playerName);</span>
+<span class="nc" id="L41">            pstmt.setString(2, playerName);</span>
+<span class="nc" id="L42">            pstmt.executeUpdate();</span>
+<span class="nc" id="L43">            System.out.println(&quot;Eredmeny mentve az adatbazisba!&quot;);</span>
+<span class="nc" id="L44">        } catch (SQLException e) {</span>
+<span class="nc" id="L45">            System.err.println(&quot;Adatbazis hiba (save): &quot; + e.getMessage());</span>
+<span class="nc" id="L46">        }</span>
+<span class="nc" id="L47">    }</span>
+
+    public List&lt;String&gt; getHighScores() {
+<span class="nc" id="L50">        List&lt;String&gt; scores = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L51">        String querySQL = &quot;SELECT player_name, wins FROM highscores ORDER BY wins DESC LIMIT 10&quot;;</span>
+
+<span class="nc" id="L53">        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);</span>
+<span class="nc" id="L54">             Statement stmt = conn.createStatement();</span>
+<span class="nc" id="L55">             ResultSet rs = stmt.executeQuery(querySQL)) {</span>
+
+<span class="nc bnc" id="L57" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L58">                scores.add(rs.getString(&quot;player_name&quot;) + &quot;: &quot; + rs.getInt(&quot;wins&quot;) + &quot; gyozelem&quot;);</span>
+            }
+<span class="nc" id="L60">        } catch (SQLException e) {</span>
+<span class="nc" id="L61">            System.err.println(&quot;Adatbazis hiba (query): &quot; + e.getMessage());</span>
+<span class="nc" id="L62">        }</span>
+<span class="nc" id="L63">        return scores;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

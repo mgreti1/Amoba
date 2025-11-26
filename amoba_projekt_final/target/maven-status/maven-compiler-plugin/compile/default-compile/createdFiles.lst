@@ -1,0 +1,8 @@
+hu\nye\progtech\service\Board.class
+hu\nye\progtech\persistence\XmlManager.class
+hu\nye\progtech\persistence\HighScoreRepository.class
+hu\nye\progtech\model\Symbol.class
+hu\nye\progtech\persistence\XmlGameState.class
+hu\nye\progtech\model\Coordinate.class
+hu\nye\progtech\Main.class
+hu\nye\progtech\service\GameLogic.class

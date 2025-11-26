@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="hu"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameLogic.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">amoba-game</a> &gt; <a href="index.source.html" class="el_package">hu.nye.progtech.service</a> &gt; <span class="el_source">GameLogic.java</span></div><h1>GameLogic.java</h1><pre class="source lang-java linenums">package hu.nye.progtech.service;
+
+import hu.nye.progtech.model.Coordinate;
+import hu.nye.progtech.model.Symbol;
+import java.util.Random;
+
+public class GameLogic {
+    private final Board board;
+
+<span class="fc" id="L10">    public GameLogic(Board board) {</span>
+<span class="fc" id="L11">        this.board = board;</span>
+<span class="fc" id="L12">    }</span>
+
+    public boolean isValidMove(Coordinate coord) {
+<span class="fc" id="L15">        int r = coord.getRow();</span>
+<span class="fc" id="L16">        int c = coord.getCol();</span>
+        
+<span class="pc bpc" id="L18" title="3 of 8 branches missed.">        if (r &lt; 0 || r &gt;= board.getRows() || c &lt; 0 || c &gt;= board.getCols()) {</span>
+<span class="fc" id="L19">            return false;</span>
+        }
+<span class="pc bpc" id="L21" title="1 of 2 branches missed.">        if (board.getSymbol(r, c) != Symbol.EMPTY) {</span>
+<span class="nc" id="L22">            return false;</span>
+        }
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">        if (isBoardEmpty()) {</span>
+<span class="fc" id="L25">            return true; </span>
+        }
+<span class="nc" id="L27">        return hasNeighbor(r, c);</span>
+    }
+    
+    private boolean isBoardEmpty() {
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        for (int i = 0; i &lt; board.getRows(); i++) {</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">            for (int j = 0; j &lt; board.getCols(); j++) {</span>
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">                if (board.getSymbol(i, j) != Symbol.EMPTY) return false;</span>
+            }
+        }
+<span class="fc" id="L36">        return true;</span>
+    }
+
+    private boolean hasNeighbor(int r, int c) {
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        for (int i = -1; i &lt;= 1; i++) {</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">            for (int j = -1; j &lt;= 1; j++) {</span>
+<span class="nc bnc" id="L42" title="All 4 branches missed.">                if (i == 0 &amp;&amp; j == 0) continue;</span>
+<span class="nc" id="L43">                int nr = r + i;</span>
+<span class="nc" id="L44">                int nc = c + j;</span>
+<span class="nc bnc" id="L45" title="All 8 branches missed.">                if (nr &gt;= 0 &amp;&amp; nr &lt; board.getRows() &amp;&amp; nc &gt;= 0 &amp;&amp; nc &lt; board.getCols()) {</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">                    if (board.getSymbol(nr, nc) != Symbol.EMPTY) return true;</span>
+                }
+            }
+        }
+<span class="nc" id="L50">        return false;</span>
+    }
+
+    public boolean checkWin(Symbol symbol) {
+<span class="fc" id="L54">        int rows = board.getRows();</span>
+<span class="fc" id="L55">        int cols = board.getCols();</span>
+
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">        for (int r = 0; r &lt; rows; r++) {</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">            for (int c = 0; c &lt; cols; c++) {</span>
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">                if (checkDirection(r, c, 1, 0, symbol) ||</span>
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">                    checkDirection(r, c, 0, 1, symbol) ||</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">                    checkDirection(r, c, 1, 1, symbol) ||</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">                    checkDirection(r, c, 1, -1, symbol)) {</span>
+<span class="fc" id="L63">                    return true;</span>
+                }
+            }
+        }
+<span class="nc" id="L67">        return false;</span>
+    }
+
+    private boolean checkDirection(int r, int c, int dr, int dc, Symbol symbol) {
+<span class="fc" id="L71">        int winLength = 4;</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        for (int i = 0; i &lt; winLength; i++) {</span>
+<span class="fc" id="L73">            int nr = r + i * dr;</span>
+<span class="fc" id="L74">            int nc = c + i * dc;</span>
+<span class="pc bpc" id="L75" title="4 of 8 branches missed.">            if (nr &lt; 0 || nr &gt;= board.getRows() || nc &lt; 0 || nc &gt;= board.getCols()) return false;</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">            if (board.getSymbol(nr, nc) != symbol) return false;</span>
+        }
+<span class="fc" id="L78">        return true;</span>
+    }
+    
+    public Coordinate getMachineMove() {
+<span class="nc" id="L82">        Random rand = new Random();</span>
+<span class="nc" id="L83">        int attempt = 0;</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        while (attempt &lt; 1000) {</span>
+<span class="nc" id="L85">            int r = rand.nextInt(board.getRows());</span>
+<span class="nc" id="L86">            int c = rand.nextInt(board.getCols());</span>
+<span class="nc" id="L87">            Coordinate coord = new Coordinate(r, c);</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">            if (isValidMove(coord)) {</span>
+<span class="nc" id="L89">                return coord;</span>
+            }
+<span class="nc" id="L91">            attempt++;</span>
+<span class="nc" id="L92">        }</span>
+<span class="nc" id="L93">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
